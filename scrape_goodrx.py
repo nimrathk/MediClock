@@ -36,12 +36,12 @@ try:
     print(f"Found {len(buttons)} pharmacy buttons.")
 
     # ✅ Click each button and extract retail price
-    for idx, button in enumerate(buttons[:5]):
+    for idx, button in enumerate(buttons[:4]):
         try:
             WebDriverWait(driver, 10).until(
                 EC.element_to_be_clickable((By.XPATH, f"(//button[contains(@data-qa, 'pharmacy-option')])[{idx + 1}]"))
             ).click()
-            time.sleep(3)
+            time.sleep(5)
 
             pharmacy_name_element = button.find_element(
                 By.XPATH, './/span[contains(@class, "sc-1pf85vx-0") and contains(@class, "sc-1ka1vzl-0")]'
