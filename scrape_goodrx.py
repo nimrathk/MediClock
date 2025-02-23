@@ -52,6 +52,9 @@ try:
         )
         
         # Click the button using JavaScript
+        driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", button)
+        time.sleep(1)  # Give time for scroll animation
+
         driver.execute_script("arguments[0].click();", button)
         time.sleep(5)  # Brief pause to let the click trigger an update
 
@@ -65,15 +68,25 @@ try:
         
         # Wait until the updated price is present (its text is different from the previous_price)
         try:
+            # Wait for the price element to update after clicking the button
             WebDriverWait(driver, 10).until(
-                lambda d: d.find_element(By.XPATH, price_xpath).text != previous_price
+                EC.staleness_of(driver.find_element(By.XPATH, price_xpath))  # Wait until the old price element is removed
             )
+
+            # Re-locate the updated price element
+            price_element = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.XPATH, price_xpath))
+            )
+
+            # Extract the updated price using JavaScript to ensure we get fresh data
+            current_price = driver.execute_script("return arguments[0].textContent;", price_element).strip()
+
         except TimeoutException:
             print(f"Warning: Price text did not change after clicking button {idx + 1}.")
         
         # Re-find the price element to ensure we are reading the updated DOM
         price_element = driver.find_element(By.XPATH, price_xpath)
-        current_price = price_element.text.strip()
+        current_price = driver.execute_script("return arguments[0].textContent;", price_element).strip()
         
         # Extract pharmacy name from the button
         pharmacy_name = button.find_element(
