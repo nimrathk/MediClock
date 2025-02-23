@@ -43,8 +43,13 @@ try:
     price_xpath = "//div[@data-qa='pricing-option-retail-price']//span//span"
     previous_price = ""
 
+
+    
     # Click each pharmacy button and extract the updated retail price
     for idx in range(4):
+        driver.refresh()  # Refresh page to ensure fresh data
+        time.sleep(10)  # Wait for the page to reload completely
+
         # Re-find the button to ensure we have a current reference
         button_xpath = f"(//button[contains(@data-qa, 'pharmacy-option')])[{idx + 1}]"
         button = WebDriverWait(driver, 10).until(
@@ -52,11 +57,8 @@ try:
         )
         
         # Click the button using JavaScript
-        driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", button)
-        time.sleep(1)  # Give time for scroll animation
-
-        driver.execute_script("arguments[0].click();", button)
-        time.sleep(5)  # Brief pause to let the click trigger an update
+        driver.execute_script("arguments[0].dispatchEvent(new MouseEvent('click', { bubbles: true }));", button)
+        time.sleep(3)  # Allow time for content to load
 
         page_html = driver.page_source
         file_name = "page_html" + str(idx + 1)
@@ -66,21 +68,11 @@ try:
 
         print(f"Page source saved to {file_name}")
         
-        # Wait until the updated price is present (its text is different from the previous_price)
+        # Wait for the updated price to be different from the previous price
         try:
-            # Wait for the price element to update after clicking the button
-            WebDriverWait(driver, 10).until(
-                EC.staleness_of(driver.find_element(By.XPATH, price_xpath))  # Wait until the old price element is removed
+            WebDriverWait(driver, 15).until(
+                lambda d: d.find_element(By.XPATH, price_xpath).text != previous_price
             )
-
-            # Re-locate the updated price element
-            price_element = WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located((By.XPATH, price_xpath))
-            )
-
-            # Extract the updated price using JavaScript to ensure we get fresh data
-            current_price = driver.execute_script("return arguments[0].textContent;", price_element).strip()
-
         except TimeoutException:
             print(f"Warning: Price text did not change after clicking button {idx + 1}.")
         
@@ -97,6 +89,7 @@ try:
         # Update previous_price for next iteration
         previous_price = current_price
         time.sleep(2)
+
 
 except Exception as e:
     print(f"Error: {e}")
