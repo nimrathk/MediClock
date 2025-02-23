@@ -19,30 +19,24 @@ def makeCSV():
     "Bromazine", "Diphenhydramine", "Clemastine", "Chlorphenoxamine", "Diphenylpyraline", "Carbinoxamine", "Doxylamine", "Trimethobenzamide", "Dimenhydrinate", "Brompheniramine", "Dexchlorpheniramine", "Dimetindene", "Chlorphenamine", "Pheniramine", "Dexbrompheniramine", "Talastine", "Mepyramine", "Histapyrrodine", "Chloropyramine", "Tripelennamine", "Methapyrilene", "Thonzylamine", "Alimemazine", "Promethazine", "Thiethylperazine", "Methdilazine", "Hydroxyethylpromethazine", "Thiazinam", "Mequitazine", "Oxomemazine", "Isothipendyl", "Buclizine", "Cyclizine", "Chlorcyclizine", "Meclozine", "Oxatomide", "Cetirizine", "Levocetirizine", "Bamipine", "Cyproheptadine", "Thenalidine", "Phenindamine", "Antazoline", "Triprolidine", "Pyrrobutamine", "Azatadine", "Astemizole", "Terfenadine", "Loratadine", "Mebhydrolin", "Deptropine", "Ketotifen", "Acrivastine", "Azelastine", "Tritoqualine", "Ebastine", "Pimethixene", "Epinastine", "Mizolastine", "Fexofenadine", "Desloratadine", "Rupatadine", "Bilastine", "Quifenadine", "Sequifenadine", "Mebhydrolin", "Deptropine", "Ketotifen", "Acrivastine", "Azelastine", "Tritoqualine", "Ebastine", "Pimethixene", "Epinastine", "Mizolastine", "Fexofenadine", "Desloratadine", "Rupatadine", "Bilastine", "Quifenadine", "Sequifenadine", "Thenalidine", "Pyrrobutamine"
     ]
 
-    all_medication_prices = {}  # Dictionary to store the data for all medications
+    all_medication_prices = {}
 
     for medication in medications:
 
         
         url = f"https://www.rxsaver.com/drugs/{medication}/coupons"
         
-        # Call the scraper method and store the returned dictionary for the current medication
         pharmacy_prices = scraper(url, medication)
         
-        # Store the scraped data in the all_medication_prices dictionary
         all_medication_prices[medication] = pharmacy_prices
 
-        # Print the dictionary for each medication
         print(f"Data for {medication}: {pharmacy_prices}")
 
-    # Now, write the data to a CSV file
     with open("medication_prices.csv", mode="w", newline="", encoding="utf-8") as file:
         writer = csv.writer(file)
         
-        # Write header to CSV file
         writer.writerow(["Medication", "Pharmacy", "Price"])
 
-        # Iterate over each medication's data
         for medication, pharmacy_prices in all_medication_prices.items():
             for pharmacy, price in pharmacy_prices.items():
                 writer.writerow([medication, pharmacy, price])
@@ -52,15 +46,13 @@ def makeCSV():
 def scraper(url, medication):
     app = FirecrawlApp(api_key='fc-4f002f4c4708489badb42b6dffca9c44')
 
-    # Create a dynamic schema for different medications
     class NestedModel1(BaseModel):
         pharmacy_name: str
-        price: str  # Generic field to hold the price, dynamically populated
+        price: str
 
     class ExtractSchema(BaseModel):
         pharmacies: List[NestedModel1]
 
-    # Perform the data extraction with Firecrawl
     data = app.extract(
         [url],
         {
@@ -69,13 +61,10 @@ def scraper(url, medication):
         }
     )
 
-    # Inspect the raw response to understand the structure
     print(data)
 
-    # Create a dictionary to store the pharmacy names and prices
     pharmacy_prices = {}
 
-    # Check if 'data' and 'pharmacies' are present in the response
     if 'data' in data and 'pharmacies' in data['data']:
         if len(data['data']['pharmacies']) > 0:
             print(f"Extracted Data for {medication}:")
@@ -84,16 +73,13 @@ def scraper(url, medication):
                 price = pharmacy['price']
                 print(f"Pharmacy: {pharmacy_name}, {medication} Price: {price}")
                 
-                # Store the price in the dictionary
                 pharmacy_prices[pharmacy_name] = price
         else:
             print(f"No pharmacies found for {medication}.")
     else:
         print(f"No pharmacies found in the extracted data for {medication}.")
 
-    # Return the dictionary of pharmacy prices for the current medication
     return pharmacy_prices
 
-# Call the main function to run the script
 if __name__ == "__main__":
     main()
