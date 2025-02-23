@@ -1,0 +1,35 @@
+import pandas as pd
+
+def find_cheapest_pharmacies(csv_file, medication_to_find, top_n=3):
+    # Read the CSV file into a DataFrame
+    df = pd.read_csv(csv_file)
+
+    # Convert column names to lowercase to avoid case-sensitivity issues
+    df.columns = df.columns.str.lower()
+
+    # Ensure the first column (medication name) is also in lowercase for matching
+    df.iloc[:, 0] = df.iloc[:, 0].astype(str).str.lower()
+
+    # Filter rows where the first column matches the given medication
+    filtered_df = df[df.iloc[:, 0] == medication_to_find.lower()]
+
+    if filtered_df.empty:
+        print(f"No data found for {medication_to_find}")
+        return
+
+    # Convert the third column (Price) to numeric values (removing '$' and commas)
+    filtered_df.iloc[:, 2] = filtered_df.iloc[:, 2].astype(str).str.replace(r"[$,]", "", regex=True).astype(float)
+
+    # Sort by price (ascending)
+    sorted_df = filtered_df.sort_values(by=df.columns[2])
+
+    # Get the top N cheapest pharmacies
+    cheapest = sorted_df.head(top_n)
+
+    # Print the results
+    print(f"Cheapest {top_n} pharmacies for {medication_to_find}:")
+    for _, row in cheapest.iterrows():
+        print(f"Pharmacy: {row.iloc[1]}, Price: ${row.iloc[2]:.2f}")
+
+# Example usage
+find_cheapest_pharmacies("medication_prices.csv", "ibuprofen")
