@@ -1,0 +1,111 @@
+.drug-search-container {
+  max-width: 500px;
+  margin: auto;
+  padding: 20px;
+  padding-bottom: 20px;
+  text-align: center;
+  font-family: 'Georgia';
+}
+
+input {
+  margin: 10px;
+  padding: 5px;
+  width: 80%;
+  border-radius: 10px;
+}
+
+button {
+  padding: 5px 10px;
+  background-color: rgb(88, 152, 208);
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 15px; 
+}
+
+.error {
+  color: red;
+}
+
+body {
+  background-color: rgb(187, 223, 236);
+}
+
+.container { /* background of large container */
+  background-color: #e0effd;   /* Light blue background */
+  border-radius: 15px;         /* Round the corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Optional: adds shadow for better visual effect */
+  margin-top: 50px;
+  padding-bottom: 200px;
+  margin-left: 0px;
+  margin-bottom: 0px;
+}
+
+.enter-drug-name-label {
+  display: flex;
+  gap: 10px;
+  font-size: 20px;
+  align-items: center;     /* Align vertically */
+  font-weight: bolder;
+  font-family: 'Georgia';
+}
+
+.best-time-container {
+  margin-top: 10px;
+  background-color: rgb(226, 244, 255);   /* Light blue background */
+  border-radius: 15px;         /* Round the corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Optional: adds shadow for better visual effect */
+  padding: 5px;
+  font-size: 20px;
+  font-family: 'Georgia';
+}
+
+.search-button {
+  margin-left: 20px;
+  font-family: 'Georgia';
+}
+
+.select-date-label {
+  font-size: 20px;
+  font-weight: bolder;
+  font-family: 'Georgia';
+}
+
+.search-button {
+  font-size: 20px;
+  font-family: 'Georgia';
+}
+
+input {
+  font-size: 18px;
+  font-family: 'Georgia';
+}
+
+.recommended-time-label {
+  font-weight: bolder;
+  font-style: italic;
+  font-family: 'Georgia';
+}
+
+.pharmacy {
+  margin-top: 10px;
+  background-color: rgb(226, 244, 255);   /* Light blue background */
+  border-radius: 15px;         /* Round the corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Optional: adds shadow for better visual effect */
+  padding: 15px;
+  font-size: 20px;
+  text-align: left;
+  font-family: 'Georgia';
+}
+
+.bottle {
+  width: 300px; /* You can adjust this value as needed */
+  height: auto; /* Maintain aspect ratio */
+}
+
+.clipboard {
+  width: 200px; /* You can adjust this value as needed */
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
