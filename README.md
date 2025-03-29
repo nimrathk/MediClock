@@ -1,6 +1,8 @@
 ## 💡 Inspiration
 Prescription medications are a necessity, but their prices should not feel like a gamble. Too often, people find themselves overpaying simply because they lack transparent pricing information. We wanted to put control back in the hands of the consumer, giving them the tools to make informed decisions about their healthcare costs. Our web app empowers individuals to plan ahead and take charge of their prescription purchases. Smart shopping isn’t just for groceries–it should apply to healthcare too.
 
+![MediClock Screenshot](assets/mediclock-screenshot.png)
+
 ## 🚀 What it does
 By predicting the best times of the year to purchase specific medications, our service helps customers decide whether to buy now or wait for a better price. Plus, it finds the most cost-effective pharmacies in the local Atlanta area, ensuring customers don’t overspend when they don’t have to. The final decision is always in their hands–we just give them the insights to make smarter choices.
 
